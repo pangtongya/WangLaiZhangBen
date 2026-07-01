@@ -81,6 +81,8 @@ private struct BookView: View {
                 )
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemBackground))
         .navigationTitle("来记个账")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $showAddBill) {
@@ -184,61 +186,41 @@ private struct PersonSummaryCard: View {
         let myOut = vm.totalOut(for: person.id)
         let taIn  = vm.totalIn(for: person.id)
         let total = myOut + taIn
-        let myPct = total > 0 ? myOut / total : 0
-        let taPct = total > 0 ? taIn / total : 0
         let net   = taIn - myOut
 
-        VStack(spacing: 16) {
+        VStack(spacing: 14) {
             // 人物信息行
             HStack(spacing: 12) {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: person.colorHex).opacity(0.3),
-                                     Color(hex: person.colorHex)],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 44, height: 44)
+                Circle()
+                    .fill(Color(hex: person.colorHex))
+                    .frame(width: 40, height: 40)
                     .overlay(
                         Text(person.relationship.emoji).font(.title3)
                     )
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(person.name).font(.headline).fontWeight(.bold)
+                    Text(person.name).font(.headline)
                     Text(person.relationship.rawValue)
                         .font(.caption)
-                        .foregroundColor(Color(hex: person.colorHex))
+                        .foregroundColor(.secondary)
                 }
                 Spacer()
             }
 
+            // 比例条
             if total > 0 {
-                // 渐变色对比条
-                VStack(spacing: 6) {
-                    GeometryReader { geo in
-                        ZStack(alignment: .leading) {
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(Color(.systemGray5))
-                                .frame(height: 12)
-                            RoundedRectangle(cornerRadius: 6)
-                                .fill(
-                                    LinearGradient(
-                                        colors: [Color.red.opacity(0.6), Color.red.opacity(0.85)],
-                                        startPoint: .leading, endPoint: .trailing
-                                    )
-                                )
-                                .frame(width: max(12, geo.size.width * CGFloat(myPct)), height: 12)
-                        }
-                    }
-                    .frame(height: 12)
-
-                    HStack {
-                        Text("我付").font(.caption2).foregroundColor(.red.opacity(0.8))
-                        Spacer()
-                        Text("TA付").font(.caption2).foregroundColor(.green.opacity(0.8))
-                    }
-                    .padding(.horizontal, 2)
+                let pct = CGFloat(total > 0 ? myOut / total : 0)
+                HStack(spacing: 2) {
+                    Rectangle()
+                        .fill(Color.red.opacity(0.7))
+                        .frame(width: max(4, 200 * pct), height: 8)
+                        .cornerRadius(4)
+                    Rectangle()
+                        .fill(Color.green.opacity(0.7))
+                        .frame(width: max(4, 200 * (1 - pct)), height: 8)
+                        .cornerRadius(4)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 2)
             }
 
             // 金额两栏
@@ -247,7 +229,7 @@ private struct PersonSummaryCard: View {
                     Text("我付出").font(.caption).foregroundColor(.secondary)
                     Text(formatAmount(myOut))
                         .font(.title2.bold())
-                        .foregroundColor(Color.red.opacity(0.85))
+                        .foregroundColor(.red)
                 }
                 .frame(maxWidth: .infinity)
 
@@ -259,33 +241,25 @@ private struct PersonSummaryCard: View {
                     Text("TA付出").font(.caption).foregroundColor(.secondary)
                     Text(formatAmount(taIn))
                         .font(.title2.bold())
-                        .foregroundColor(Color.green.opacity(0.8))
+                        .foregroundColor(.green)
                 }
                 .frame(maxWidth: .infinity)
             }
 
             // 差额标签
             if total > 0 {
-                HStack(spacing: 4) {
-                    Image(systemName: "arrow.left.arrow.right")
-                        .font(.caption2)
-                    Text(net >= 0 ? "TA 多付了" : "我多付了")
-                        .font(.caption)
-                    Text(formatAmount(abs(net)))
-                        .font(.caption.bold())
-                        .foregroundColor(net >= 0 ? .green : .red.opacity(0.85))
-                }
-                .foregroundColor(.secondary)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
-                .background(Color(.systemGray6))
-                .clipShape(Capsule())
+                Text(net >= 0 ? "TA 多付了 \(formatAmount(abs(net)))" : "我多付了 \(formatAmount(abs(net)))")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(Color(.systemGray6))
+                    .clipShape(Capsule())
             }
         }
-        .padding(18)
+        .padding(16)
         .background(Color(.secondarySystemGroupedBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.04), radius: 8, y: 2)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .padding(.horizontal, 16)
     }
 }
@@ -315,12 +289,7 @@ private struct ExampleBanner: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 9)
-        .background(
-            LinearGradient(
-                colors: [Color.orange.opacity(0.08), Color.yellow.opacity(0.06)],
-                startPoint: .leading, endPoint: .trailing
-            )
-        )
+        .background(Color.orange.opacity(0.08))
     }
 }
 
@@ -332,14 +301,9 @@ private struct EmptyStateView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(Color(.systemGray6))
-                    .frame(width: 72, height: 72)
-                Image(systemName: icon)
-                    .font(.system(size: 28))
-                    .foregroundColor(.secondary.opacity(0.5))
-            }
+            Image(systemName: icon)
+                .font(.system(size: 36))
+                .foregroundColor(.secondary.opacity(0.4))
             Text(title).font(.subheadline.weight(.medium)).foregroundColor(.secondary)
             Text(subtitle).font(.caption).foregroundColor(.secondary.opacity(0.6))
         }

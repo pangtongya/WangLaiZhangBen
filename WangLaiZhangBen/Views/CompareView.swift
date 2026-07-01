@@ -145,13 +145,7 @@ private struct RankRow: View {
 
             // 人物头像
             Circle()
-                .fill(
-                    LinearGradient(
-                        colors: [Color(hex: person.colorHex).opacity(0.4),
-                                 Color(hex: person.colorHex)],
-                        startPoint: .topLeading, endPoint: .bottomTrailing
-                    )
-                )
+                .fill(Color(hex: person.colorHex))
                 .frame(width: 32, height: 32)
                 .overlay(Text(person.relationship.emoji).font(.caption))
 
@@ -187,6 +181,6 @@ private struct PersonStats {
     let net: Double
 }
 
-extension PersonStats: @retroactive Identifiable {
+extension PersonStats: Identifiable {
     var id: String { "\(out)_\(`in`)_\(net)" }
 }

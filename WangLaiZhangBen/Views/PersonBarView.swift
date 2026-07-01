@@ -55,13 +55,7 @@ private struct PersonChip: View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [Color(hex: person.colorHex).opacity(0.5),
-                                     Color(hex: person.colorHex)],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
-                        )
-                    )
+                    .fill(Color(hex: person.colorHex))
                     .frame(width: 26, height: 26)
                     .overlay(
                         Text(person.relationship.emoji)
@@ -199,13 +193,7 @@ struct PersonManageView: View {
             ForEach(vm.persons) { p in
                 HStack(spacing: 12) {
                     Circle()
-                        .fill(
-                            LinearGradient(
-                                colors: [Color(hex: p.colorHex).opacity(0.4),
-                                         Color(hex: p.colorHex)],
-                                startPoint: .topLeading, endPoint: .bottomTrailing
-                            )
-                        )
+                        .fill(Color(hex: p.colorHex))
                         .frame(width: 32, height: 32)
                         .overlay(Text(p.relationship.emoji).font(.caption))
                     VStack(alignment: .leading) {

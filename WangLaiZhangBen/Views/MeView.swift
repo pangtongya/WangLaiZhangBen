@@ -27,13 +27,7 @@ struct MeView: View {
                     ForEach(vm.persons) { p in
                         HStack(spacing: 12) {
                             Circle()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [Color(hex: p.colorHex).opacity(0.4),
-                                                 Color(hex: p.colorHex)],
-                                        startPoint: .topLeading, endPoint: .bottomTrailing
-                                    )
-                                )
+                                .fill(Color(hex: p.colorHex))
                                 .frame(width: 32, height: 32)
                                 .overlay(Text(p.relationship.emoji).font(.caption))
                             VStack(alignment: .leading, spacing: 2) {
