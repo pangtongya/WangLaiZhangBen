@@ -62,11 +62,16 @@
 - 删除 HomeView.swift 和 StatsView.swift（不再需要）
 
 ## 编译状态
-- 最后一次编译：2026-07-01 01:20
+- 最后一次编译：2026-07-01 21:05
 - 结果：BUILD SUCCEEDED
 - 错误数：0
 - 警告数：0
 
+## 已知问题与规避
+- **SwiftUI 渲染崩溃（白屏）**：避免在同一个视图内组合使用 `GeometryReader` + `LinearGradient` + `.shadow()`，iOS 17 上可能导致渲染崩溃。修复方案：用固定尺寸的 HStack 代替 GeometryReader，用纯色 + opacity 代替 LinearGradient。
+- **simctl install 挂起**：命令行 `xcrun simctl install` 在部分模拟器上会无限挂起，需在 Xcode 内手动 Run。
+
 ## 待办事项
-- [ ] 测试 App 运行时功能是否完整
-- [ ] 优化 UI 样式和交互体验
+- [ ] 用户需在 Xcode 中手动 Run 验证白屏修复
+- [ ] 完成 App Store 截图
+- [ ] 提交 App Store Connect
