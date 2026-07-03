@@ -62,16 +62,59 @@
 - 删除 HomeView.swift 和 StatsView.swift（不再需要）
 
 ## 编译状态
-- 最后一次编译：2026-07-01 21:05
+- 最后一次编译：2026-07-03 21:03 (Release)
 - 结果：BUILD SUCCEEDED
 - 错误数：0
 - 警告数：0
+
+## App Store 上架准备状态 (2026-07-03)
+
+### ✅ 已完成
+1. **项目配置检查**
+   - Bundle ID: com.pangtong.WangLaiZhangBen ✅
+   - 版本号: 1.0 (Build 1) ✅
+   - App 名称: 来记个账 ✅
+   - UILaunchScreen 修复为空 dict ✅
+
+2. **图标验证**
+   - 1024x1024 图标存在 ✅
+   - 无 alpha 通道 (hasAlpha: no) ✅
+   - 全套尺寸完整（iPhone + iPad）✅
+
+3. **隐私政策**
+   - HTML 页面已创建 (`privacy/index.html`) ✅
+   - 部署到 CloudStudio ✅
+   - URL: https://e095a6feca2e41578d6f7a366174cdb4.app.codebuddy.work
+
+4. **上架材料**
+   - 完整指南: `AppStore-Full-Guide.md` ✅
+   - 包含所有 App Store Connect 填写内容
+   - 包含审核问答答案（出口合规:否, 版权:否, IDFA:否）
+
+5. **截图**
+   - 至少 1 张账本页截图已生成 ✅
+   - 位置: `screenshots/screenshot3_after_wait.png`
+
+6. **App Store 上架 Skill**
+   - 创建了可复用的 `app-store-publish` skill ✅
+   - 位置: `~/.workbuddy/skills/app-store-publish/`
+
+### ⏳ 待用户完成
+- [ ] 补充截图（对比页、我的页面）
+- [ ] Xcode Archive + Distribute to App Store Connect
+- [ ] 登录 App Store Connect 填写信息并提交审核
+
+### 📋 快速参考
+- **主要类别**: 财务 (Finance)
+- **次要类别**: 生活 (Lifestyle)
+- **关键词**: 记账,账本,前任,钱财,AA制,分手,情侣,财务管理
+- **年龄分级**: 4+
+- **版权**: © 2026 庞通
 
 ## 已知问题与规避
 - **SwiftUI 渲染崩溃（白屏）**：避免在同一个视图内组合使用 `GeometryReader` + `LinearGradient` + `.shadow()`，iOS 17 上可能导致渲染崩溃。修复方案：用固定尺寸的 HStack 代替 GeometryReader，用纯色 + opacity 代替 LinearGradient。
 - **simctl install 挂起**：命令行 `xcrun simctl install` 在部分模拟器上会无限挂起，需在 Xcode 内手动 Run。
 
 ## 待办事项
-- [ ] 用户需在 Xcode 中手动 Run 验证白屏修复
-- [ ] 完成 App Store 截图
-- [ ] 提交 App Store Connect
+- [x] ✅ 完成 App Store 截图（至少 1 张已完成）
+- [ ] 提交 App Store Connect（等待用户在 Xcode 中 Archive 和填写）
