@@ -38,8 +38,7 @@ targets:
         LSRequiresIPhoneOS: true
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: false
-        UILaunchScreen:
-          UILaunchScreen:
+        UILaunchScreen: {}
         UIRequiredDeviceCapabilities:
           - arm64
         UIRequiresFullScreen: false

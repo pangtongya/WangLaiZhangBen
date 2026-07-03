@@ -4,9 +4,10 @@ struct ContentView: View {
     @EnvironmentObject var vm: AccountViewModel
     @State private var currentPid: String? = nil
     @State private var showGuide = false
+    @State private var selectedTab = 0
 
     var body: some View {
-        TabView {
+        TabView(selection: $selectedTab) {
             // 账本
             NavigationStack {
                 BookView(currentPid: $currentPid)
@@ -14,6 +15,7 @@ struct ContentView: View {
             .tabItem {
                 Label("账本", systemImage: "book.closed.fill")
             }
+            .tag(0)
 
             // 对比
             NavigationStack {
@@ -22,6 +24,7 @@ struct ContentView: View {
             .tabItem {
                 Label("对比", systemImage: "chart.bar.fill")
             }
+            .tag(1)
 
             // 我的
             NavigationStack {
@@ -30,9 +33,15 @@ struct ContentView: View {
             .tabItem {
                 Label("我的", systemImage: "person.circle.fill")
             }
+            .tag(2)
         }
         .tint(.blue)
         .onAppear {
+            // 读取启动参数，用于自动化截图
+            let args = UserDefaults.standard
+            if let tabParam = args.string(forKey: "startTab"), let tabIndex = Int(tabParam) {
+                selectedTab = tabIndex
+            }
             // 默认选中第一个人物
             if currentPid == nil, let first = vm.persons.first {
                 currentPid = first.id
